@@ -7,12 +7,12 @@ import Signin from './components/auth';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
   // <React.StrictMode>
-  //   <Signin/>
+  //   <BrowserRouter>
+  //     <App />
+  //   </BrowserRouter>
   // </React.StrictMode>
+  <React.StrictMode>
+    <Signin/>
+  </React.StrictMode>
 );
