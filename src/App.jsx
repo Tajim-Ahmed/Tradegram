@@ -1,14 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Nav from './components/nav/nav';
-import Footer from './components/mobilefooter/routeset';
-import Home from './pages/home/home';
-import Explore from './pages/explore/explore';
-import Profile from './pages/profile/profile';
-import Chat from './pages/chats/chat';
-import Post from './pages/add-posts/post'
-import Offers from './components/offers/offer'
-import Support from './components/support/popup';
+import Nav from './components/nav';
+import Footer from './components/routeset';
+import Home from './pages/home';
+import Explore from './pages/explore';
+import Profile from './pages/profile';
+import Chat from './pages/chat';
+import Post from './pages/post'
+import Offers from './components/offer'
+import Support from './components/popup';
 
 
 const App = () => {

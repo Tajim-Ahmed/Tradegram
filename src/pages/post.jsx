@@ -1,7 +1,8 @@
-import Nav from '../../components/nav/nav'
-import Footer from '../../components/mobilefooter/routeset'
+import Nav from '../components/nav'
+
+import Footer from '../components/routeset'
 import React from 'react'
-import Upload from '../../components/uploads/upload'
+import Upload from '../components/upload'
 
 function Post () {
     return(

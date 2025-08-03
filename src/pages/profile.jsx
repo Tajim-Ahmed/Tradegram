@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
-import Nav from '../../components/nav/nav'
-import Footer from '../../components/mobilefooter/routeset'
-import Offer from '../../components/offers/offer'
+import Nav from '../components/nav'
+import Footer from '../components/routeset'
+import Offer from '../components/offer'
 import { Link } from "react-router-dom";
 
 export default function ProfilePage() {

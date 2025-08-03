@@ -1,6 +1,6 @@
 import React from "react";
-import Nav from '../../components/nav/nav'
-import Footer from '../../components/mobilefooter/routeset'
+import Nav from '../components/nav'
+import Footer from '../components/routeset'
 
 const users = [
   {
