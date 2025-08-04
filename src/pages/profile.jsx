@@ -1,16 +1,33 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Nav from '../components/nav'
 import Footer from '../components/routeset'
 import Offer from '../components/offer'
 import { Link } from "react-router-dom";
-
-export default function ProfilePage() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [profilePic, setProfilePic] = useState(null);
-  const [backgroundPic, setBackgroundPic] = useState(null);
+import { useAuth } from "../authcontext";
+import { useNavigate } from "react-router-dom";
+// import { useEffect } from "../authcontext";
+  
+  export default function ProfilePage() {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [profilePic, setProfilePic] = useState(null);
+    const [backgroundPic, setBackgroundPic] = useState(null);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
   const [posts, setPosts] = useState([]);
+
+   useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user]);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
 const handlePostUpload = (e) => {
   const file = e.target.files[0];
@@ -49,7 +66,7 @@ const handlePostUpload = (e) => {
             <div className="hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">Change Password</div>
             <div className="hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">Wish List</div>
             <div className="hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">Saved</div>
-            <div className="hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">Logout</div>
+            <div onClick={handleLogout} className="hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">Logout</div>
             <Link to='/support' className="hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">Support</Link>
           </div>
         )}
@@ -104,6 +121,14 @@ const handlePostUpload = (e) => {
         <p className="text-gray-700 font-medium">Shop Name</p>
         <p className="text-gray-500 text-sm">123 Main St, City</p>
         <p className="text-gray-600">Latest post caption or status</p>
+      </div>
+
+      <div className="space-y-2 text-sm text-gray-700">
+        <p><strong>Name:</strong> {user.displayName || "Anonymous"}</p>
+        <p><strong>Email:</strong> {user.email || "N/A"}</p>
+        <p><strong>Phone:</strong> {user.phoneNumber || "N/A"}</p>
+        <p><strong>User ID:</strong> {user.uid}</p>
+        <p><strong>Provider:</strong> {user.providerData[0]?.providerId}</p>
       </div>
 
       {/* Stats */}

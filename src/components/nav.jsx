@@ -24,7 +24,7 @@ function Navbar({ className }) {
             {menuItems.map((item) => (
               <li key={item}>
                 <Link
-                  to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                  to={item === "Home" ? "/home" : `/${item.toLowerCase()}`}
                   className="text-black px-3 py-2 rounded-md hover:bg-blue-600 hover:text-white transition"
                 >
                   {item}

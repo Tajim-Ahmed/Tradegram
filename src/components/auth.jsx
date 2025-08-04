@@ -1,107 +1,117 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { auth } from "../firebase";
 import {
   GoogleAuthProvider,
   signInWithPopup,
+  signInAnonymously,
   signInWithPhoneNumber,
   RecaptchaVerifier,
-  sendSignInLinkToEmail,
-  isSignInWithEmailLink,
-  signInWithEmailLink
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
-  // GOOGLE SIGN-IN
+
+  // ✅ Google Sign-In
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("Google user:", user.displayName, user.email);
+      console.log("✅ Google user:", user.displayName, user.email);
+      navigate("/home");
+
     } catch (err) {
-      console.error(err);
+      console.error("❌ Google sign-in error:", err.message);
     }
   };
 
-  // PHONE OTP LOGIN
+  // ✅ Anonymous Sign-In
+  const handleAnonymousSignIn = async () => {
+    try {
+      const result = await signInAnonymously(auth);
+      console.log("✅ Anonymous user:", result.user.uid);
+      navigate("/home");
+
+    } catch (err) {
+      console.error("❌ Anonymous sign-in error:", err.message);
+    }
+  };
+
+  // ✅ Setup Recaptcha for Phone OTP
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha", {
         size: "invisible",
-        callback: () => console.log("Recaptcha Resolved"),
+        callback: () => console.log("✅ Recaptcha Resolved"),
       });
     }
   };
 
-  const handleSendOtp = async () => {
-    setupRecaptcha();
+ // Send OTP
+const handleSendOtp = async () => {
+  const sanitizedPhone = phone.replace(/\D/g, "").slice(0, 10);
+  const formattedPhone = `+91${sanitizedPhone}`;
+
+  try {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha", {
+        size: "invisible",
+        callback: () => {
+          console.log("Recaptcha resolved");
+        },
+        "expired-callback": () => {
+          console.warn("Recaptcha expired, reinitializing...");
+          window.recaptchaVerifier.clear();
+          window.recaptchaVerifier = null;
+        },
+      });
+    }
+
     const appVerifier = window.recaptchaVerifier;
 
-    const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
-  setupRecaptcha();
+    const confirmationResult = await signInWithPhoneNumber(
+      auth,
+      formattedPhone,
+      appVerifier
+    );
 
-    try {
-      await signInWithPhoneNumber(auth, formattedPhone, appVerifier).then(
-        (confirmationResult) => {
-          window.confirmationResult = confirmationResult;
-          setOtpSent(true);
-        }
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    window.confirmationResult = confirmationResult;
+    setOtpSent(true);
+    console.log("✅ OTP sent to", formattedPhone);
+  } catch (err) {
+    console.error("❌ Failed to send OTP:", err.code, err.message);
+    alert("OTP send error: " + err.message);
+  }
+};
 
-  const handleVerifyOtp = async () => {
-    try {
-      const result = await window.confirmationResult.confirm(otp);
-      const user = result.user;
-      console.log("Phone user:", user.phoneNumber);
-    } catch (err) {
-      console.error("Invalid OTP", err);
-    }
-  };
+// Verify OTP
+const handleVerifyOtp = async () => {
+  try {
+    const confirmationResult = window.confirmationResult;
+    if (!confirmationResult) throw new Error("No confirmation result saved.");
 
-  // EMAIL LINK LOGIN
-  const handleEmailLinkLogin = async () => {
-    const actionCodeSettings = {
-      url: window.location.href,
-      handleCodeInApp: true,
-    };
-    try {
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-      window.localStorage.setItem("emailForSignIn", email);
-      alert("Email link sent!");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    const result = await confirmationResult.confirm(otp);
+    console.log("✅ Phone user:", result.user.phoneNumber);
+    navigate("/home");
+  } catch (err) {
+    console.error("❌ Invalid OTP:", err.code, err.message);
+    alert("Invalid OTP: " + err.message);
+  }
+};
 
-  // Handle login when email link is clicked
-  useEffect(() => {
-    if (isSignInWithEmailLink(auth, window.location.href)) {
-      const storedEmail = window.localStorage.getItem("emailForSignIn");
-      if (storedEmail) {
-        signInWithEmailLink(auth, storedEmail, window.location.href)
-          .then((result) => {
-            console.log("Email link user:", result.user.email);
-          })
-          .catch(console.error);
-      }
-    }
-  }, []);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-2xl space-y-4">
         <h2 className="text-2xl font-semibold text-center">Login</h2>
 
-        {/* Google Sign-In */}
+        {/* ✅ Google Sign-In */}
         <button
           onClick={handleGoogleSignIn}
           className="w-full py-3 bg-sky-500 text-white rounded-xl font-semibold"
@@ -109,14 +119,26 @@ export default function LoginPage() {
           Continue with Google
         </button>
 
-        {/* Phone Sign-In */}
+        {/* ✅ Anonymous Login */}
+        <button
+          onClick={handleAnonymousSignIn}
+          className="w-full py-3 bg-gray-700 text-white rounded-xl font-semibold"
+        >
+          Continue Anonymously
+        </button>
+
+        {/* ✅ Phone OTP Login */}
         {!otpSent ? (
           <>
             <input
               type="tel"
-              placeholder="Phone Number"
+              placeholder="WhatsApp Number"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              maxLength={10}
+              inputMode="numeric"
+              onChange={(e) =>
+                setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))
+              }
               className="w-full border px-4 py-2 rounded-xl"
             />
             <div id="recaptcha"></div>
@@ -124,8 +146,11 @@ export default function LoginPage() {
               onClick={handleSendOtp}
               className="w-full py-2 bg-gray-800 text-white rounded-xl"
             >
-              Send OTP
+              Send OTP (via SMS)
             </button>
+            <p className="text-xs text-gray-600 mt-2">
+              OTP will be sent to your WhatsApp number via SMS.
+            </p>
           </>
         ) : (
           <>
@@ -144,23 +169,6 @@ export default function LoginPage() {
             </button>
           </>
         )}
-
-        {/* Email Link Login */}
-        <div className="pt-4 border-t">
-          <input
-            type="email"
-            placeholder="Your Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border px-4 py-2 rounded-xl"
-          />
-          <button
-            onClick={handleEmailLinkLogin}
-            className="w-full mt-2 py-2 bg-gray-900 text-white rounded-xl"
-          >
-            Send Login Link
-          </button>
-        </div>
       </div>
     </div>
   );
