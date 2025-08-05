@@ -73,47 +73,60 @@ const handlePostUpload = (e) => {
       </div>
 
       {/* Background Image */}
-      <div className="relative w-full h-48 bg-gray-200 rounded-b-xl overflow-hidden">
-        {backgroundPic ? (
-          <img
-            src={backgroundPic}
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
-            Upload Background
-          </div>
-        )}
-        {/* <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleImageUpload(e, setBackgroundPic)}
-          className="absolute bottom-2 left-2 text-sm text-white"
-        /> */}
-      </div>
+<div
+  className="relative w-full h-48 bg-gray-200 rounded-b-xl overflow-hidden cursor-pointer"
+  onClick={() => document.getElementById('backgroundUpload').click()}
+>
+  {backgroundPic ? (
+    <img
+      src={backgroundPic}
+      alt="Background"
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="flex items-center justify-center h-full text-gray-500 text-sm">
+      Upload Background
+    </div>
+  )}
 
-      {/* Profile Image */}
-      <div className="relative -mt-12 flex justify-center">
-        <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-white">
-          {profilePic ? (
-            <img
-              src={profilePic}
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-600">
-              Upload DP
-            </div>
-           
-          )}
+  <input
+    id="backgroundUpload"
+    type="file"
+    accept="image/*"
+    onChange={(e) => handleImageUpload(e, setBackgroundPic)}
+    className="hidden"
+  />
+</div>
 
-          {/* <img src="" alt=""
-            className="absolute bottom-0 left-0 opacity-0 w-full h-full cursor-pointer"
-          /> */}
-        </div>
+{/* Profile Image */}
+<div className="relative -mt-12 flex justify-center">
+  <div
+    className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-white bg-gray-300 text-gray-600 cursor-pointer"
+    onClick={() => document.getElementById('profileUpload').click()}
+  >
+    {profilePic ? (
+      <img
+        src={profilePic}
+        alt="Profile"
+        className="w-full h-full object-cover"
+      />
+    ) : (
+      <div className="w-full h-full flex items-center justify-center text-sm">
+        Upload DP
       </div>
+    )}
+
+    <input
+      id="profileUpload"
+      type="file"
+      accept="image/*"
+      onChange={(e) => handleImageUpload(e, setProfilePic)}
+      className="hidden"
+    />
+  </div>
+</div>
+
+
 
       {/* User Info */}
       <div className="text-center mt-4 space-y-1">

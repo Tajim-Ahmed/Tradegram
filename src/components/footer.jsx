@@ -20,7 +20,7 @@ const MobileFooter = () => {
       <Link to="/post" className="flex flex-col items-center text-gray-700 hover:text-black">
         <PlusCircle size={36} className="-mt-4 bg-white rounded-full" />
       </Link>
-      <Link to="/" className="flex flex-col items-center text-gray-700 hover:text-black">
+      <Link to="" className="flex flex-col items-center text-gray-700 hover:text-black">
         <Tag size={24} />
       </Link>
       <Link to="/profile" className="flex flex-col items-center text-gray-700 hover:text-black">
