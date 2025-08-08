@@ -6,6 +6,7 @@ node_modules/
 
 # Ignore Vite or React build output if present in frontend
 Frontend/dist/
+Frontend/node_modules
 
 # Ignore backend build files (if you ever use TypeScript or similar)
 backend/dist/
