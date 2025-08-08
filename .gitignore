@@ -4,38 +4,25 @@ node_modules/
 .DS_Store
 *.log
 
-# Ignore Vite or React build output if present in frontend
-Frontend/dist/
-Frontend/node_modules
-
-# Ignore backend build files (if you ever use TypeScript or similar)
+# Ignore build outputs
+frontend/dist/
+frontend/node_modules/
 backend/dist/
+build/
+dist/
+
 # Logs
 logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-node_modules
-.env
-dist
-build
-.DS_Store
-
-
-# Editor directories and files
+# Editor stuff
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
