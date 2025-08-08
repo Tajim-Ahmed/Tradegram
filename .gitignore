@@ -1,0 +1,11 @@
+# Ignore global stuff
+node_modules/
+.env
+.DS_Store
+*.log
+
+# Ignore Vite or React build output if present in frontend
+Frontend/dist/
+
+# Ignore backend build files (if you ever use TypeScript or similar)
+backend/dist/
