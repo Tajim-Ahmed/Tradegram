@@ -11,7 +11,7 @@ function Navbar({ className }) {
     <nav className={className}>
       <div className={`bg-white px-4 py-3 shadow-md ${className}`}>
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-lg font-bold text-black">TRADEGRAM</div>
+          <div className="text-lg font-bold text-black ">TRADEGRAM</div>
 
           <input
             type="text"

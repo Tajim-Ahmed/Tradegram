@@ -92,13 +92,13 @@ const dummyPosts = [
 const ExploreGrid = () => {
   return (
     <div>
-      <div className="container mx-auto flex justify-between items-center m-2  md:hidden py-1 w-full">
-      <div className="text-lg font-bold text-black">
+      <div className="container shadow-md mx-auto flex justify-between items-center m-2  md:hidden py-1 w-full">
+      <div className="text-lg font-bold text-black ml-2.5">
           TRADEGRAM
         </div>
 
     <div className="container mx-auto flex justify-between items-center m-2" >
-        <input type="text" name="search" className=" px-2 placeholder:text-slate-700 rounded-md border-2 border-b-gray-500  m-5 mt-0 mb-0" placeholder="search.. " />
+        <input type="text" name="search" className=" px-2 placeholder:text-slate-700 rounded-md border-2 border-blue-500  m-5 mt-0 mb-0" placeholder="search.. " />
 
       </div>
       </div>

@@ -12,7 +12,7 @@ import Home from './home'
     return(
         
     <div>
-    <Nav className="shadow-md hidden sm:block p-0"/>
+    <Nav className="shadow-md hidden sm:block "/>
     <Explore/>
     <Footer/>
 </div>
