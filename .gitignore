@@ -5,8 +5,10 @@ node_modules/
 *.log
 
 # Ignore build outputs
-frontend/dist/
-frontend/node_modules/
+dist/
+Frontend/dist
+Frontend/node_modules
+node_modules/
 backend/dist/
 build/
 dist/
