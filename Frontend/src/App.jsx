@@ -14,8 +14,7 @@ import PrivateRoute from './components/Privateroute';
 
 const App = () => {
   return (
-    
-    
+          
       <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
