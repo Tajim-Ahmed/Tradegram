@@ -1,33 +1,18 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import postRoutes from './routes/postroutes.js';
-import locationRoutes from './routes/locationroute.js';
-
-
-const router = express.Router();
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./db.js";
 
 dotenv.config();
 const app = express();
 
-router.get('/', (req, res) => {
-  res.send('Location endpoint is live');
+// Connect to MongoDB
+connectDB();
+
+app.get("/", (req, res) => {
+  res.send("API is running and DB is connected");
 });
 
-
-// Enable CORS for frontend (Vite dev server on port 5173)
-app.use(cors({ origin: 'http://localhost:5173' }));
-app.use(express.json());
-
-// Routes
-app.use('/api/location', locationRoutes);
-// app.use('/api/posts', postRoutes);
-
-app.get('/', (req, res) => {
-  res.send('API is running...');
+app.listen(process.env.PORT, () => {
+  console.log(`🚀 Server running on port ${process.env.PORT}`);
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
